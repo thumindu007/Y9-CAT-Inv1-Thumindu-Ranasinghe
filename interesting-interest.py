@@ -14,15 +14,26 @@ def get_data():
     simple = {'starting_amount' : Sstarting_amount, 'interest_rate' : Sinterest_rate, 'interest_rate_time' : Sinterest_rate_time}
 
     print(f"SI Account: P = {simple['starting_amount']}, r = {simple['interest_rate']} per {simple['interest_rate_time']}")
-    print(f"CI Account: P = {compounding['starting_amount']}, r = {compounding['interest_rate']} per {compounding['interest_rate_time']}, Compounding ")
+    print(f"CI Account: P = {compounding['starting_amount']}, r = {compounding['interest_rate']} per {compounding['interest_rate_time']}, Compounding Frequenc")
     print(f"Projection timeframe: {time_into_future} {unit_into_future}")
 
     return compounding, simple, time_into_future, unit_into_future
 
+def calculate_compounding(account, time_into_future, unit_into_future, time_units):
+    print(account['Compound_period'])
+    if account['Compound_period'] is str:
+        time = time_units[account['Compound_period']]
+        print(time)
 
+    return account['starting_amount'] * (1+((account['interest_rate'] / 100) / account['Compound_period'])) ** (time * account['Compound_period'])
 
+time_units = {'year' : 1, 'quarter' : 4, 'month' : 12, 'week' : 52, 'day' : 365}
 
 accounts = get_data()
 compounding_account, simple_account, time_into_future, unit_into_future = accounts[0], accounts[1], accounts[2], accounts[3]
 
 print(compounding_account, '\n',simple_account)
+
+compounding_account_calculated = calculate_compounding(compounding_account, time_into_future, unit_into_future, time_units)
+
+print(compounding_account_calculated)
