@@ -1,4 +1,7 @@
 #started on 26/2
+def convert_to_annual_rate(interest_rate, compound_period):
+    return (1 + interest_rate / compound_period) ** compound_period - 1
+
 def get_data():
 
     print("Simple Interest Account:")
@@ -22,6 +25,10 @@ def get_data():
 def calculate_compounding(account, time_into_future, unit_into_future, time_units):
     if account['Compound_period'] in time_units:
         account.update({'Compound_period' : time_units[account['Compound_period']]})
+
+    print((1+((account['interest_rate'] / 100) / account['Compound_period'])))
+
+    print(((time_into_future / time_units[unit_into_future]) * account['Compound_period']))
 
     return account['starting_amount'] * (1+((account['interest_rate'] / 100) / account['Compound_period'])) ** ((time_into_future / time_units[unit_into_future]) * account['Compound_period'])
 
