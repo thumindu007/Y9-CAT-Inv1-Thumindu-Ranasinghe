@@ -51,6 +51,8 @@ def interface():
         if module == 2:
             print("\n***MODULE 2: TIME FOR A CI ACCOUNT TO REACH A TARGET AMOUNT***")
             compounding_account_target = get_compounding_account()
+            compounding_account_target["color"] = "red"
+            print(compounding_account_target)
             
 
         input("\n\nClick enter when you are done looking:  ")
