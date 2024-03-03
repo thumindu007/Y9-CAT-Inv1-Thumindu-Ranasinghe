@@ -13,19 +13,19 @@ def get_compounding_account(module):
 def calculate_minimum_compounds(account, time_units, projections, periods, module):
     compounding_per_year = account['Compound_period']
     current_amount = account['starting_amount']
-    interest_rate = (account['interest_rate'] / time_units[account['interest_rate_time']]) / time_units[account['Compound_period']]
+    interest_rate = (account['interest_rate']/100) / time_units[account['interest_rate_time']]
     print(interest_rate)
     if compounding_per_year in time_units:
         compounding_per_year = time_units[compounding_per_year]
 
     if module == 3:
         for _ in range(account['Compound_period']):
-            interest_amount = current_amount * ((account['interest_rate'] / time_units[account['interest_rate_time']] / 100) / (time_units['year'] / time_units[account['interest_rate_time']]))
+            interest_amount = current_amount * (interest_rate)
             current_amount += interest_amount
             projections.append(round(current_amount, 2))
     else:
         while current_amount < account['target_amount']:
-            interest_amount = current_amount * ((interest_rate / 100) / (time_units[account['interest_rate_time']]))
+            interest_amount = current_amount * (interest_rate)
             current_amount += interest_amount
             projections.append(round(current_amount, 2))
             periods += 1
@@ -83,7 +83,7 @@ def interface():
             compounding_account_target["target_amount"] = float(input("\nEnter the target amount: "))
             print(f"\n\nCI Account: P = {compounding_account_target['starting_amount']}, r = {compounding_account_target['interest_rate']} per {compounding_account_target['interest_rate_time']}, Compounding Frequency: {compounding_account_target['Compound_period']}\nTarget amount: {compounding_account_target['target_amount']}")
             mask_off = calculate_minimum_compounds(compounding_account_target, time_units, [], 0, module)
-            print(f"\n\nForward projection: {mask_off[0]}\nTime taken: {mask_off[1] * time_units[compounding_account_target['Compound_period']]} {compounding_account_target['Compound_period']}")
+            print(f"\n\nForward projection: {mask_off[0]}\nTime taken: {mask_off[1] * time_units[compounding_account_target['Compound_period']]} {compounding_account_target['interest_rate_time']}")
 
         if module == 3:
             print("\n***MODULE 2: COMPARE TWO CI ACCOUNTS***")
