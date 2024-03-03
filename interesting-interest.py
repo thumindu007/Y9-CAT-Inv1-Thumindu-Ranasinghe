@@ -14,13 +14,12 @@ def calculate_minimum_compounds(account, time_units, projections, periods, modul
     compounding_per_year = account['Compound_period']
     current_amount = account['starting_amount']
     interest_rate = (account['interest_rate']/100) / time_units[account['interest_rate_time']]
-    print(interest_rate)
     if compounding_per_year in time_units:
         compounding_per_year = time_units[compounding_per_year]
 
     if module == 3:
-        for _ in range(account['Compound_period']):
-            interest_amount = current_amount * (interest_rate)
+        for _ in range(time_units[account['Compound_period']] * account['time_into_future']):
+            interest_amount = current_amount * (interest_rate/time_units[account['Compound_period']])
             current_amount += interest_amount
             projections.append(round(current_amount, 2))
     else:
@@ -89,8 +88,8 @@ def interface():
             print("\n***MODULE 2: COMPARE TWO CI ACCOUNTS***")
             compounding_account1, compounding_account2 = get_compounding_account(module), get_compounding_account(module)
             compounding_account1_calculated, compounding_account2_calculated = calculate_minimum_compounds(compounding_account1, time_units, [], 0, module), calculate_minimum_compounds(compounding_account2, time_units, [], 0, module)
-            print(compounding_account1_calculated)
-            print(compounding_account2_calculated)
+            print(compounding_account1_calculated[0],'\n', compounding_account2_calculated[0])
+            print(f"\n\nFinal amount account 1: {compounding_account1_calculated[0][-1]}\nFinal amount account 2: {compounding_account2_calculated[0][-1]}")
 
         input("\n\nClick enter when you are done looking:  ")
         return True
