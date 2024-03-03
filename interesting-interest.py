@@ -4,6 +4,12 @@ def get_compounding_account(module):
     Cstarting_amount, Cinterest_rate, Cinterest_rate_time, Compound_period = float(input("\nEnter the principal amount in $: ")), float(input("\nEnter the interest rate (enter 7%' as 7): ")), input("\nEnter the interest rate time unit (year, quarter, month, week, day): "), input("\nEnter the compounding period time unit (year, quarter, month, week, day, custom): ")
     if Compound_period == 'custom':
         Compound_period = float(input("\nEnter the number of compounding periods per interest rate time unit: "))
+    time_into_future, unit_into_future = False, False
+    if module == 4:
+        deposit_amount, target_amount = float(input("\nEnter the regular deposit amount per compounding period: ")), float(input("\nEnter the dollar amount to project to (if you enter 0, you will be asked for the amount of time to project for): "))
+        if target_amount == 0:
+            time_into_future, unit_into_future = int(input("\nIn that case, enter the amount of time to project for: ")), input("\nEnter the projection time unit (year, quarter, month, week, day, custom): ")
+        return {'starting_amount' : Cstarting_amount, 'interest_rate' : Cinterest_rate, 'interest_rate_time' : Cinterest_rate_time, 'Compound_period' : Compound_period, 'time_into_future' : time_into_future, 'unit_into_future' : unit_into_future, 'target_amount' : target_amount, 'deposit_amount' : deposit_amount}
     if module == 3:
         time_into_future, unit_into_future = int(input("\nEnter the amount of time to project into the future: ")), input("\nEnter the projection time unit (year, quarter, month, week, day): ")
         return {'starting_amount' : Cstarting_amount, 'interest_rate' : Cinterest_rate, 'interest_rate_time' : Cinterest_rate_time, 'Compound_period' : Compound_period, 'time_into_future' : time_into_future, 'unit_into_future' : unit_into_future}
@@ -76,7 +82,7 @@ def interface():
             print(f"\n\n\nSI Account projected amount: ${simple_account_calculated}, Interest earned: ${simple_account_calculated - simple_account['starting_amount']}")
             print(f"\nCI Account projected amount: ${compounding_account_calculated}, Interest earned: ${compounding_account_calculated - compounding_account['starting_amount']}")
         
-        if module == 2:
+        elif module == 2:
             print("\n***MODULE 2: TIME FOR A CI ACCOUNT TO REACH A TARGET AMOUNT***")
             compounding_account_target = get_compounding_account(2)
             compounding_account_target["target_amount"] = float(input("\nEnter the target amount: "))
@@ -84,12 +90,16 @@ def interface():
             mask_off = calculate_minimum_compounds(compounding_account_target, time_units, [], 0, module)
             print(f"\n\nForward projection: {mask_off[0]}\nTime taken: {mask_off[1] * time_units[compounding_account_target['Compound_period']]} {compounding_account_target['interest_rate_time']}")
 
-        if module == 3:
-            print("\n***MODULE 2: COMPARE TWO CI ACCOUNTS***")
+        elif module == 3:
+            print("\n***MODULE 4: MODEL REGULAR DEPOSITS***")
             compounding_account1, compounding_account2 = get_compounding_account(module), get_compounding_account(module)
             compounding_account1_calculated, compounding_account2_calculated = calculate_minimum_compounds(compounding_account1, time_units, [], 0, module), calculate_minimum_compounds(compounding_account2, time_units, [], 0, module)
             print(compounding_account1_calculated[0],'\n', compounding_account2_calculated[0])
             print(f"\n\nFinal amount account 1: {compounding_account1_calculated[0][-1]}\nFinal amount account 2: {compounding_account2_calculated[0][-1]}")
+
+        elif module == 4:
+            print("\n***MODULE 2: COMPARE TWO CI ACCOUNTS***")
+            account = get_compounding_account(module)
 
         input("\n\nClick enter when you are done looking:  ")
         return True
