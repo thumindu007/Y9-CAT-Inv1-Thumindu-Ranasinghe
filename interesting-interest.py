@@ -24,19 +24,13 @@ def calculate_minimum_compounds(account, time_units, projections, periods, modul
     interest_rate = (account['interest_rate']/100) / time_units[account['interest_rate_time']]
     if module == 4:
         deposit = account['deposit_amount']
-    print(interest_rate)
     if compounding_per_year in time_units:
         compounding_per_year = time_units[compounding_per_year]
 
-    if module == 3:
+    if module == 3 or (module == 4 and account['target_amount'] == 0):
         for _ in range(time_units[account['Compound_period']] * account['time_into_future']):
             interest_amount = current_amount * (interest_rate/time_units[account['Compound_period']])
             current_amount += interest_amount
-            projections.append(round(current_amount, 2))
-    elif module == 4 and account['target_amount'] == 0:
-        for _ in range(time_units[account['Compound_period']] * account['time_into_future']):
-            interest_amount = (current_amount) * (interest_rate/time_units[account['Compound_period']])
-            current_amount += interest_amount + deposit
             projections.append(round(current_amount, 2))
     
     else:
