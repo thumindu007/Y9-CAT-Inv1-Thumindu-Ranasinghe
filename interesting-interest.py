@@ -21,7 +21,7 @@ def calculate_minimum_compounds(account, time_units, projections, periods, modul
     
     compounding_per_year = account['Compound_period']
     current_amount = account['starting_amount']
-    interest_rate = (account['interest_rate']/100) / time_units[account['interest_rate_time']]
+    interest_rate_per_compound = (account['interest_rate']/100) / time_units[account['interest_rate_time']]
     if module == 4:
         deposit = account['deposit_amount']
     if compounding_per_year in time_units:
@@ -29,13 +29,13 @@ def calculate_minimum_compounds(account, time_units, projections, periods, modul
 
     if module == 3 or (module == 4 and account['target_amount'] == 0):
         for _ in range(time_units[account['Compound_period']] * account['time_into_future']):
-            interest_amount = current_amount * (interest_rate/time_units[account['Compound_period']])
-            current_amount += interest_amount
+            interest_amount = current_amount * (interest_rate_per_compound/time_units[account['Compound_period']])
+            current_amount += interest_amount + deposit
             projections.append(round(current_amount, 2))
     
     else:
         while current_amount < account['target_amount']:
-            interest_amount = (current_amount) * (interest_rate)
+            interest_amount = (current_amount) * (interest_rate_per_compound)
             current_amount += interest_amount + deposit
             projections.append(round(current_amount, 2))
             periods += 1
@@ -105,7 +105,7 @@ def interface():
         elif module == 4:
             print("\n***MODULE 4: MODEL REGULAR DEPOSITS***")
             deposit_account = get_compounding_account(module)
-            deposit_account_calculated = calculate_minimum_compounds(deposit_account, time_units, [], 0, module)
+            deposit_account_calculated = calculate_minimum_compounds(deposit_account, new_units, [], 0, module)
             print('\n',deposit_account_calculated[0])
             if deposit_account_calculated[1] != 0:
                 print(f"\nTime taken: {deposit_account_calculated[1] * time_units[deposit_account['Compound_period']]} {deposit_account['interest_rate_time']}")
@@ -116,6 +116,7 @@ def interface():
 #====================================================================================================================================================================================================
 global time_units
 time_units = {'year' : 1, 'quarter' : 4, 'month' : 12, 'week' : 52, 'day' : 365}
+new_units = {'year' : {'year' : 1, 'quarter' : 4, 'month' : 12, 'week' : 52, 'day' : 365}, 'quarter' : {'year' : 0.25, 'quarter' : 1, 'month' : 3, 'week' : 13, 'day' : 91}, 'month' : {'year' : (1/12), 'quarter' : (1/3), 'month' : 1, 'week' : (30/7), 'day' : 30}, 'week' : {'year' : (1/52), 'quarter' : (1/13), 'month' : (1/7.5), 'week' : 1, 'day' : 7}, 'day' : {'year' : (1/365), 'quarter' : (1/91), 'month' : (1/30), 'week' : (1/7), 'day' : 1}}
 module = True
 
 while module:
