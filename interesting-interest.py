@@ -94,7 +94,7 @@ def interface():
             compounding_account_target["target_amount"] = float(input("\nEnter the target amount: "))
             print(f"\n\nCI Account: P = {compounding_account_target['starting_amount']}, r = {compounding_account_target['interest_rate']} per {compounding_account_target['interest_rate_time']}, Compounding Frequency: {compounding_account_target['Compound_period']}\nTarget amount: {compounding_account_target['target_amount']}")
             mask_off = calculate_minimum_compounds(compounding_account_target, time_units, [], 0, module)
-            print(f"\n\nForward projection: {mask_off[0]}\nTime taken: {mask_off[1] * time_units[compounding_account_target['Compound_period']]} {compounding_account_target['interest_rate_time']}")
+            print(f"\n\nForward projection: {mask_off[0]}\nTime taken: {mask_off[1] * time_units[compounding_account_target['Compound_period']]} {compounding_account_target['Compound_period']}")
 
         elif module == 3:
             print("\n***MODULE 3: COMPARE TWO CI ACCOUNTS***")
