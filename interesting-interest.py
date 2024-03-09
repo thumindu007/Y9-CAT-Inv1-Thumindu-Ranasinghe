@@ -34,6 +34,13 @@ def calculate_minimum_compounds(account, time_units, projections, periods, modul
             current_amount += interest_amount
             projections.append(round(current_amount, 2))
     
+    elif module == 5:
+        for _ in range(time_units[account['Compound_period']] * account['time_into_future']):
+            current_amount = current_amount + deposit
+            interest_amount = current_amount * interest_rate_per_compound
+            current_amount += interest_amount
+            projections.append(round(current_amount, 2))
+    
     else:
         while current_amount < account['target_amount']:
             interest_amount = (current_amount) * (interest_rate_per_compound)
@@ -110,6 +117,11 @@ def interface():
             print('\n',deposit_account_calculated[0])
             if deposit_account_calculated[1] != 0:
                 print(f"\nTime taken: {deposit_account_calculated[1] * time_units[deposit_account['Compound_period']]} {deposit_account['Compound_period']}")
+
+        elif module == 5:
+            print("\n***MODULE 4: SIMULATE INCREASES IN COMPOUNDING FREQUENCY***")
+            increasing_account = get_compounding_account(module)
+
         input("\n\nClick enter when you are done looking:  ")
         return True
 
