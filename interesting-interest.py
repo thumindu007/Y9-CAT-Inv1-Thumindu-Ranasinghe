@@ -1,5 +1,5 @@
 #started on 26/2
-
+from tabulate import tabulate
 def get_compounding_account(module):
     Cstarting_amount, Cinterest_rate, Cinterest_rate_time, Compound_period = float(input("\nEnter the principal amount in $: ")), float(input("\nEnter the interest rate (enter 7%' as 7): ")), input("\nEnter the interest rate time unit (year, quarter, month, week, day): "), input("\nEnter the compounding period time unit (year, quarter, month, week, day, custom): ")
     if Compound_period == 'custom':
@@ -17,33 +17,41 @@ def get_compounding_account(module):
         return {'starting_amount' : Cstarting_amount, 'interest_rate' : Cinterest_rate, 'interest_rate_time' : Cinterest_rate_time, 'Compound_period' : Compound_period}
     
 def calculate_minimum_compounds(account, time_units, projections, periods, module):
-    deposit = 0
-    interest_amount = 0
-    compounding_per_year = account['Compound_period']
-    current_amount = account['starting_amount']
-    interest_rate_per_compound = (account['interest_rate'] / (time_units[account['Compound_period']] / time_units[account['interest_rate_time']])) / 100
+    deposit, interest_amount, compounding_per_year, current_amount, pinciples, interests, deposits = 0, 0, account['Compound_period'], account['starting_amount'], [], [], []
     if module == 4:
         deposit = account['deposit_amount']
     if compounding_per_year in time_units:
         compounding_per_year = time_units[compounding_per_year]
-
-    if module == 3 or (module == 4 and account['target_amount'] == 0):
-        for _ in range(time_units[account['Compound_period']] * account['time_into_future']):
+        compound_unit = time_units[account['Compound_period']]
+    else:
+        compound_unit = float(compounding_per_year)
+    interest_rate_per_compound = (account['interest_rate'] / (compound_unit / time_units[account['interest_rate_time']])) / 100
+    if module == 3 or (module == 4 and account['target_amount'] == 0) or module == 5 or module == 1:
+        for _ in range(int(compound_unit) * account['time_into_future']):
+            pinciples.append(current_amount)
             current_amount = current_amount + deposit
             interest_amount = current_amount * interest_rate_per_compound
             current_amount += interest_amount
             projections.append(round(current_amount, 2))
+            interests.append(interest_amount)
+            deposits.append(deposit)
     
     else:
         while current_amount < account['target_amount']:
+            pinciples.append(current_amount)
             interest_amount = (current_amount) * (interest_rate_per_compound)
             current_amount += interest_amount + deposit
             projections.append(round(current_amount, 2))
+            interests.append(round(interest_amount, 2))
+            deposits.append(deposit)
             periods += 1
 
+    data = [pinciples, interests, deposits, projections]
+    data = list(map(list, zip(*data)))
+    header = ["Princible", "Interest", "Deposit", "Final"]
+    print(tabulate(data, tablefmt="grid", headers=header))
     # Calculate the minimum number of compounding periods needed
     min_periods = periods / compounding_per_year
-
     return projections, min_periods
 
 def get_data():
@@ -61,15 +69,6 @@ def get_data():
 
     return compounding, simple, time_into_future, unit_into_future
 
-def calculate_compounding(account, time_into_future, unit_into_future, time_units):
-    compounding_per_year = account['Compound_period']
-    interest_rate_yearly = account['interest_rate'] * time_units[account['interest_rate_time']]
-    time_in_years = time_into_future / time_units[unit_into_future]
-    if compounding_per_year in time_units:
-        compounding_per_year = time_units[compounding_per_year]
-    
-    return round(account['starting_amount'] * (1+((interest_rate_yearly / 100) / compounding_per_year)) ** (time_in_years * compounding_per_year), 2)
-
 def calculate_simple(account, time_into_future, unit_into_future, time_units):
     return round(account['starting_amount'] + account['starting_amount'] * ((account['interest_rate'] * time_units[account['interest_rate_time']]) / 100) * (time_into_future / time_units[unit_into_future]), 2)
 
@@ -82,11 +81,12 @@ def interface():
             print("\n***MODULE 1: SIMPLE AND COMPOUND INTEREST COMPARISON***")
             accounts = get_data()
             compounding_account, simple_account, time_into_future, unit_into_future = accounts[0], accounts[1], accounts[2], accounts[3]
-            compounding_account_calculated = calculate_compounding(compounding_account, time_into_future, unit_into_future, time_units)
+            compounding_account["time_into_future"], compounding_account["unit_into_future"] = time_into_future, unit_into_future
+            compounding_account_calculated = calculate_minimum_compounds(compounding_account, time_units, [], 0, module)
             simple_account_calculated = calculate_simple(simple_account, time_into_future, unit_into_future, time_units)
 
             print(f"\n\n\nSI Account projected amount: ${simple_account_calculated}, Interest earned: ${simple_account_calculated - simple_account['starting_amount']}")
-            print(f"\nCI Account projected amount: ${compounding_account_calculated}, Interest earned: ${compounding_account_calculated - compounding_account['starting_amount']}")
+            print(f"\nCI Account projected amount: ${compounding_account_calculated[0][-1]}, Interest earned: ${compounding_account_calculated[0][-1] - compounding_account['starting_amount']}")
         
         elif module == 2:
             print("\n***MODULE 2: TIME FOR A CI ACCOUNT TO REACH A TARGET AMOUNT***")
@@ -100,24 +100,23 @@ def interface():
             print("\n***MODULE 3: COMPARE TWO CI ACCOUNTS***")
             compounding_account1, compounding_account2 = get_compounding_account(module), get_compounding_account(module)
             compounding_account1_calculated, compounding_account2_calculated = calculate_minimum_compounds(compounding_account1, time_units, [], 0, module), calculate_minimum_compounds(compounding_account2, time_units, [], 0, module)
-            print(compounding_account1_calculated[0],'\n', compounding_account2_calculated[0])
             print(f"\n\nFinal amount account 1: {compounding_account1_calculated[0][-1]}\nFinal amount account 2: {compounding_account2_calculated[0][-1]}")
 
         elif module == 4:
             print("\n***MODULE 4: MODEL REGULAR DEPOSITS***")
             deposit_account = get_compounding_account(module)
             deposit_account_calculated = calculate_minimum_compounds(deposit_account, time_units, [], 0, module)
-            print('\n',deposit_account_calculated[0])
             if deposit_account_calculated[1] != 0:
                 print(f"\nTime taken: {deposit_account_calculated[1] * time_units[deposit_account['Compound_period']]} {deposit_account['Compound_period']}")
+            
 
         elif module == 5:
             print("\n***MODULE 4: SIMULATE INCREASES IN COMPOUNDING FREQUENCY***")
-            increasing_account = {'starting_amount' : 1000, 'interest_rate' : 100, 'interest_rate_time' : 'year', 'Compound_period' : Compound_period, 'time_into_future' : time_into_future, 'unit_into_future' : unit_into_future, 'target_amount' : target_amount, 'deposit_amount' : deposit_amount}
+            quarterly, weekly, daily, hourly, tenminutely = calculate_minimum_compounds({'starting_amount' : 1000, 'interest_rate' : 100, 'interest_rate_time' : 'year', 'Compound_period' : 'quarter', 'time_into_future' : 1, 'unit_into_future' : 'year'}, time_units, [], 0, module), calculate_minimum_compounds({'starting_amount' : 1000, 'interest_rate' : 100, 'interest_rate_time' : 'year', 'Compound_period' : 'week', 'time_into_future' : 1, 'unit_into_future' : 'year'}, time_units, [], 0, module), calculate_minimum_compounds({'starting_amount' : 1000, 'interest_rate' : 100, 'interest_rate_time' : 'year', 'Compound_period' : 'day', 'time_into_future' : 1, 'unit_into_future' : 'year'}, time_units, [], 0, module), calculate_minimum_compounds({'starting_amount' : 1000, 'interest_rate' : 100, 'interest_rate_time' : 'year', 'Compound_period' : (365*24), 'time_into_future' : 1, 'unit_into_future' : 'year'}, time_units, [], 0, module), calculate_minimum_compounds({'starting_amount' : 1000, 'interest_rate' : 100, 'interest_rate_time' : 'year', 'Compound_period' : 52704, 'time_into_future' : 1, 'unit_into_future' : 'year'}, time_units, [], 0, module)
+            print(f"\n\nFinal amount account quarterly: {quarterly[0][-1]}\n\nFinal amount account weekly: {weekly[0][-1]}\n\nFinal amount account daily: {daily[0][-1]}\n\nFinal amount account hourly: {hourly[0][-1]}\n\nFinal amount account tenminutely: {tenminutely[0][-1]}")
 
         input("\n\nClick enter when you are done looking:  ")
         return True
-
 
 #====================================================================================================================================================================================================
 global time_units
