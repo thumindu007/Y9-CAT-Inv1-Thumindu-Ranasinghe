@@ -2,29 +2,25 @@
 from tabulate import tabulate
 def get_compounding_account(module):
     Cstarting_amount, Cinterest_rate, Cinterest_rate_time, Compound_period = float(input("\nEnter the principal amount in $: ")), float(input("\nEnter the interest rate (enter 7%' as 7): ")), input("\nEnter the interest rate time unit (year, quarter, month, week, day): "), input("\nEnter the compounding period time unit (year, quarter, month, week, day, custom): ")
-    if Compound_period == 'custom':
-        Compound_period = float(input("\nEnter the number of compounding periods per interest rate time unit: "))
+    if Compound_period == 'custom':  Compound_period = float(input("\nEnter the number of compounding periods per interest rate time unit: "))
     time_into_future, unit_into_future = False, False
     if module == 4:
         deposit_amount, target_amount = float(input("\nEnter the regular deposit amount per compounding period: ")), float(input("\nEnter the dollar amount to project to (if you enter 0, you will be asked for the amount of time to project for): "))
-        if target_amount == 0:
-            time_into_future, unit_into_future = int(input("\nIn that case, enter the amount of time to project for: ")), input("\nEnter the projection time unit (year, quarter, month, week, day, custom): ")
+        if target_amount == 0:  time_into_future, unit_into_future = int(input("\nIn that case, enter the amount of time to project for: ")), input("\nEnter the projection time unit (year, quarter, month, week, day, custom): ")
         return {'starting_amount' : Cstarting_amount, 'interest_rate' : Cinterest_rate, 'interest_rate_time' : Cinterest_rate_time, 'Compound_period' : Compound_period, 'time_into_future' : time_into_future, 'unit_into_future' : unit_into_future, 'target_amount' : target_amount, 'deposit_amount' : deposit_amount}
     if module == 3:
         time_into_future, unit_into_future = int(input("\nEnter the amount of time to project into the future: ")), input("\nEnter the projection time unit (year, quarter, month, week, day): ")
         return {'starting_amount' : Cstarting_amount, 'interest_rate' : Cinterest_rate, 'interest_rate_time' : Cinterest_rate_time, 'Compound_period' : Compound_period, 'time_into_future' : time_into_future, 'unit_into_future' : unit_into_future}
-    else:
-        return {'starting_amount' : Cstarting_amount, 'interest_rate' : Cinterest_rate, 'interest_rate_time' : Cinterest_rate_time, 'Compound_period' : Compound_period}
+    else:   return {'starting_amount' : Cstarting_amount, 'interest_rate' : Cinterest_rate, 'interest_rate_time' : Cinterest_rate_time, 'Compound_period' : Compound_period}
     
 def calculate_minimum_compounds(account, time_units, projections, periods, module):
     deposit, interest_amount, compounding_per_year, current_amount, pinciples, interests, deposits = 0, 0, account['Compound_period'], account['starting_amount'], [], [], []
-    if module == 4:
-        deposit = account['deposit_amount']
+    if module == 4: deposit = account['deposit_amount']
     if compounding_per_year in time_units:
         compounding_per_year = time_units[compounding_per_year]
         compound_unit = time_units[account['Compound_period']]
-    else:
-        compound_unit = float(compounding_per_year)
+    else: compound_unit = float(compounding_per_year)
+
     interest_rate_per_compound = (account['interest_rate'] / (compound_unit / time_units[account['interest_rate_time']])) / 100
     if module == 3 or (module == 4 and account['target_amount'] == 0) or module == 5 or module == 1:
         for _ in range(int(compound_unit) * account['time_into_future']):
@@ -35,7 +31,6 @@ def calculate_minimum_compounds(account, time_units, projections, periods, modul
             projections.append(round(current_amount, 2))
             interests.append(interest_amount)
             deposits.append(deposit)
-    
     else:
         while current_amount < account['target_amount']:
             pinciples.append(current_amount)
@@ -62,10 +57,7 @@ def get_data():
     print("\n\nFuture projection timeframe for both accounts:")
     time_into_future, unit_into_future = int(input("\nEnter the amount of time to project into the future: ")), input("\nEnter the projection time unit (year, quarter, month, week, day): ")
     simple = {'starting_amount' : Sstarting_amount, 'interest_rate' : Sinterest_rate, 'interest_rate_time' : Sinterest_rate_time}
-
-    print(f"\n\nSI Account: P = {simple['starting_amount']}, r = {simple['interest_rate']} per {simple['interest_rate_time']}")
-    print(f"\nCI Account: P = {compounding['starting_amount']}, r = {compounding['interest_rate']} per {compounding['interest_rate_time']}, Compounding Frequency: {compounding['Compound_period']}")
-    print(f"\nProjection timeframe: {time_into_future} {unit_into_future}\n")
+    print(f"\n\nSI Account: P = {simple['starting_amount']}, r = {simple['interest_rate']} per {simple['interest_rate_time']}\nCI Account: P = {compounding['starting_amount']}, r = {compounding['interest_rate']} per {compounding['interest_rate_time']}, Compounding Frequency: {compounding['Compound_period']}\nProjection timeframe: {time_into_future} {unit_into_future}\n")
 
     return compounding, simple, time_into_future, unit_into_future
 
@@ -74,8 +66,7 @@ def calculate_simple(account, time_into_future, unit_into_future, time_units):
 
 def interface():
     module = int(input("\n\n==================================================================\nThis program has five modules. Choose a module by typing its number\n\n(1) Compare simple and compound interest savings acccounts\n(2) Calculate the time for a CI savings account to reach a target amount\n(3) Compare two Compound Interest savings accounts\n(4) Model a CI savings account with regular deposits\n(5) Model increases in compounding frequency\n\nEnter 1 to 5, or 6 to quit:  "))
-    if module == 6:
-        return False
+    if module == 6:   return False
     else:
         if module == 1:
             print("\n***MODULE 1: SIMPLE AND COMPOUND INTEREST COMPARISON***")
@@ -108,7 +99,6 @@ def interface():
             deposit_account_calculated = calculate_minimum_compounds(deposit_account, time_units, [], 0, module)
             if deposit_account_calculated[1] != 0:
                 print(f"\nTime taken: {deposit_account_calculated[1] * time_units[deposit_account['Compound_period']]} {deposit_account['Compound_period']}")
-            
 
         elif module == 5:
             print("\n***MODULE 4: SIMULATE INCREASES IN COMPOUNDING FREQUENCY***")
