@@ -102,6 +102,56 @@ def interface(): # function for the user interface                      # asks w
             quarterly, weekly, daily, hourly, tenminutely = calculate_minimum_compounds({'starting_amount' : 1000, 'interest_rate' : 100, 'interest_rate_time' : 'year', 'Compound_period' : 'quarter', 'time_into_future' : 1, 'unit_into_future' : 'year'}, time_units, [], 0, module), calculate_minimum_compounds({'starting_amount' : 1000, 'interest_rate' : 100, 'interest_rate_time' : 'year', 'Compound_period' : 'week', 'time_into_future' : 1, 'unit_into_future' : 'year'}, time_units, [], 0, module), calculate_minimum_compounds({'starting_amount' : 1000, 'interest_rate' : 100, 'interest_rate_time' : 'year', 'Compound_period' : 'day', 'time_into_future' : 1, 'unit_into_future' : 'year'}, time_units, [], 0, module), calculate_minimum_compounds({'starting_amount' : 1000, 'interest_rate' : 100, 'interest_rate_time' : 'year', 'Compound_period' : (365*24), 'time_into_future' : 1, 'unit_into_future' : 'year'}, time_units, [], 0, module), calculate_minimum_compounds({'starting_amount' : 1000, 'interest_rate' : 100, 'interest_rate_time' : 'year', 'Compound_period' : 52704, 'time_into_future' : 1, 'unit_into_future' : 'year'}, time_units, [], 0, module)
             print(f"\n\nFinal amount account quarterly: {quarterly[0][-1]}\n\nFinal amount account weekly: {weekly[0][-1]}\n\nFinal amount account daily: {daily[0][-1]}\n\nFinal amount account hourly: {hourly[0][-1]}\n\nFinal amount account tenminutely: {tenminutely[0][-1]}")
 
+        else:
+            print("""
+                                  µçççççççµ
+                         µ▄æ╧╜╩ññ.  ▄▄▄æ##æ▄▓▀▄,
+                    ▄#╜²         ¿ççç▄▄▄▄▄▄▄▄▄,;▀gµ
+                 ▄▀²                               ▀▄
+               ▄▀         ,▄æ▀╨▀▀▀æ▄,               ²▀
+             ,▀         ▄▀          _▀▄          ▄▀╜ñ²▀
+            ▄▀         █              "▌        █      █
+           █`         ▄ææM▀╩ñññññ╙▀%▄,                 ╘▌
+         ¿▀      ,▄██▌                ²▀▄,µ,    ▄#▀╨╨╨╨╨▀█æwçµ
+        ▐Ö      █▓╜ ▐¿                  ▐.  a/╙▓         Ñ▄   ²%,
+       ▐Ö     ▄▓▀    ▓  ▐╨▀▒▄▄çñ▀%▄    ▓▐   ²▀▓⌂,▄▄gæææµ Ñ     ▓▓█
+       ▌    ▄▓▀      "█,▓▄▓▓▓▓▓▄æ#▀╙   ▌╨"       ²█▓▓▓  ▓  █    ▓▓"
+      █    █▀          _²²╙╩╙╨▀▀════#█▒▄æ▀▀       ▓  ¡²²└  ╙▄  ▐▓
+      ▓  J▀                         ▌    ,¿▄µ      ²▀▄²ñ╙╩╩█▌╙╙▓_
+     ]M #"                          ▓   █▓▓▓▀   ▄▓██ _█     ²▌▌
+     ]▄▀                            ▀ç,╘▀▀░_     ▀▀å¿▀        █
+     ]&                                ²²        ╨╨▀;          ▌
+     ]«                                                        Ñ
+     ]«                                   µççççççµ              █
+     ]«                              ▄#▀▓« ▌  ▐  ▐M▀▄           ÑΩ
+     ]«                           ¿▌²Ñ, ▄██▓▓▓▓██▓▄▌╙▌           ▓
+     ]«                          ▀╙▐▄█▓▓▓▓▓▓▓▓▓▓▓▓═▓g▓           ]Ω
+     ]M    ,█              ▄    ███▓▓▓▓▓▓▓▓▓▓▓▓▓▓▀#█▒▓           ▐
+    ,█▌  ñ▒M,▄M           █    ▐█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▌           ▌
+   ²░]▄▓██▓▌_ ¿          ▐╜    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓M  ▌       █
+     ▐▌█▓ñ▒▌█╩          ▐`    ]▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓M  ▓     *▓█*
+   æ▀ç▓▀▒▒▄▀▄█          ▌    ,█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓   Ñ     ▐▓▄²
+ ²ñ²_▓▓▓▓▓▀ç▄#╛       █     ]▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓   Ñ    ▓▓▓▌
+     ,▄▓▓ ,╬&          ÑΩ    ]▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▌   ▓    ▓▓█╙
+    ,,,▄▓▌▀█▓══         ▌     ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓   █    █▓▓▀*
+     _µ▄▓▓▄▄▄                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓M  ]&   █▓▒_
+     ¿▄█▓▓▓▓▀                  ▓▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▌       ]▓▀▀
+      "▀▀▓█▀▄▄▓▀               ▐▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓       ]▓█▌
+         ▐▄▓▒▄▀▄    $█M#┘       ▐▓╓▓▓▓▓▓▓▓▓▓▓▓▒▓▓_       ▐▒▓▓
+       æ▀▓▓▀▓▄▄Ö╙╩▀▓▓▓▓ç▄▄æ      ╙▓█ÖÅ▓▀▓▀█▀▌▄█▀        ▐▓▓▓▀
+     ¿▄Ö² ]M.▓▌▐█▄▄▓æææ▓▓`          ²▀▀▀██▓▀▀╙     g█▄ ▐▓▓██▌
+  ¿#Ö    µ█#Öµ▓█▓▓ πçç█▄▒▓▓Ö`                    ▐g▓▌ j▓▐▓█▄æ
+¿#▀_    ╙╩` #▀▓▓▀▓▓▓▓▓▓█▄]▀▒▄▄▌∩                ▀▄▓▓²▀▄▓▓▀▀▀²╙%▄
+▄▀▀_          ╓█▓▀▀▀▀░█▓▓å▄▓²ñ)▓▓▌ ¡▄       ¿    ██Ñ▓▒▀]▓▄▓▓█µ▄   :▀▀æç
+             *æææ▀▀╢▓█▓▄▄»▄▓═▀▀▓▓▄▄▓]▄µ▌▓▓▄█▌▄▓▓⌂█ ¢▓╙▀æ∞           :ñ╩╨¼æ▄µ
+                ▐█▀▓▓▓▓▓██▓M▄²░²²▓▀Q▓▄MÑM  ▓  ²▓▒▓▓▌æ
+                  ² ╘╙Ñ▀▓▓%∩ ▌▌┌Ö▀▀▀╨▀.        ∞░▓▓▓▓▓▀╨
+                     ═▀░█,▒██▓▓▀ ╥ ▌,  ¡,,▌█▓▓▓▒▒▒ç
+                    ]æ#Ö  └▀▓▓▓▄▄▓██▄▓▄▄▓▓▓▓▓▄
+                           ²▄▄▓▓▀▀█▓▒▓▀▀█▄ç Ñ
+                                   ╙*    ╛
+    """)
+
         input("\n\nClick enter when you are done looking:  ")  # lets the user look at the output before the program starts again
         return True  # returns true since the user wants to continue
 
@@ -112,3 +162,4 @@ module = True
 
 while module:  # continuously runs until the user wants to stop where interface() will reutrn false and stops the program
     module = interface()
+
