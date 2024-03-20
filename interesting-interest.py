@@ -16,10 +16,8 @@ def get_compounding_account(module):    #gathers all the inputs for the accounts
 def calculate_minimum_compounds(account, time_units, projections, periods, module):    #function that calculates all the data for all parts
     deposit, interest_amount, compounding_per_year, current_amount, pinciples, interests, deposits = 0, 0, account['Compound_period'], account['starting_amount'], [], [], []
     if module == 4: deposit = account['deposit_amount']   #Sets all the list and variables for each part
-    if compounding_per_year in time_units:
-        compounding_per_year = time_units[compounding_per_year]   #sets the compoundings per year to the users input if its a set amount
-        compound_unit = time_units[account['Compound_period']]
-    else: compound_unit = float(compounding_per_year)    #sets the compoundings per year to the users custom ammount
+    if compounding_per_year in time_units:    compound_unit = time_units[account['Compound_period']]
+    else:                                     compound_unit = float(compounding_per_year)    #sets the compoundings per year to the users custom ammount
 
     interest_rate_per_compound = (account['interest_rate'] / (compound_unit / time_units[account['interest_rate_time']])) / 100   #sets the interest rate per compounding period
     if module == 3 or (module == 4 and account['target_amount'] == 0) or module == 5 or module == 1:   # the loop used for calculating for a set amount of time
@@ -47,7 +45,7 @@ def calculate_minimum_compounds(account, time_units, projections, periods, modul
     if module != 5:   # only prints table if the part is not 5
         print(tabulate(data, tablefmt="grid", headers=header))  # prints the big table
     # Calculate the minimum number of compounding periods needed
-    min_periods = periods / compounding_per_year  # calculates the minimum amount of time to reach the target
+    min_periods = periods / compound_unit  # calculates the minimum amount of time to reach the target
     return projections, min_periods
 
 def get_data():  # function the gets the data for part 1
