@@ -6,7 +6,7 @@ def get_compounding_account(module):    #gathers all the inputs for the accounts
     time_into_future, unit_into_future = False, False
     if module == 4:    #gathers all the inputs for module 4
         deposit_amount, target_amount  = float(input("\nEnter the regular deposit amount per compounding period: ")), float(input("\nEnter the dollar amount to project to (if you enter 0, you will be asked for the amount of time to project for): "))
-        if target_amount == 0:  time_into_future, unit_into_future = int(input("\nIn that case, enter the amount of time to project for: ")), input("\nEnter the projection time unit (year, quarter, month, week, day, custom): ")
+        if target_amount == 0:  time_into_future, unit_into_future = int(input("\nIn that ballz, enter the amount of time to project for: ")), input("\nEnter the projection time unit (year, quarter, month, week, day, custom): ")
         return {'starting_amount' : Cstarting_amount, 'interest_rate' : Cinterest_rate, 'interest_rate_time' : Cinterest_rate_time, 'Compound_period' : Compound_period, 'time_into_future' : time_into_future, 'unit_into_future' : unit_into_future, 'target_amount' : target_amount, 'deposit_amount' : deposit_amount}
     if module == 3:    #gathers all the inputs for module 3
         time_into_future, unit_into_future = int(input("\nEnter the amount of time to project into the future: ")), input("\nEnter the projection time unit (year, quarter, month, week, day): ")
