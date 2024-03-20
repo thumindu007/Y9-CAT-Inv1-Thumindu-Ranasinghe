@@ -63,7 +63,7 @@ def get_data():  # function the gets the data for part 1
     return compounding, simple, time_into_future, unit_into_future
 
 def interface(): # function for the user interface                      # asks what module the user wants to run
-    module = int(input("\n\n==================================================================\nThis program has five modules. Choose a module by typing its number\n\n(1) Compare simple and compound interest savings acccounts\n(2) Calculate the time for a CI savings account to reach a target amount\n(3) Compare two Compound Interest savings accounts\n(4) Model a CI savings account with regular deposits\n(5) Model increases in compounding frequency\n\nEnter 1 to 5, or 6 to quit:  "))
+    module = int(input("\n\n==================================================================\nThis program has five modules. Choose a module by typing its number\n\n(1) Compare simple and compound interest savings acccounts\n(2) Calculate the time for a CI savings account to reach a target amount\n(3) Compare two Compound Interest savings accounts\n(4) Model a CI savings account with regular deposits\n(5) Model increases in compounding frequency\n\nEnter 1 to 5, or 6 to quit or something else for a suprise!:  "))
     if module == 6:   return False   # if the module is 6, then the program quits
     else:  # otherwise it looks at which part the user wants to run
         if module == 1:  # code for part 1
@@ -162,4 +162,3 @@ module = True
 
 while module:  # continuously runs until the user wants to stop where interface() will reutrn false and stops the program
     module = interface()
-
